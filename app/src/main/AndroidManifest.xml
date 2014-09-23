@@ -3,8 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.studentrobotics.tablet">
 
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -21,12 +24,6 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".WiFiService" android:label="@string/title_service_wifi">
-            <intent-filter>
-                <action android:name="com.studentrobotics.tablet.WiFiService" />
-            </intent-filter>
-        </service>
-
         <receiver
             android:name=".StartAtBootReceiver"
             android:enabled="true"
@@ -34,6 +31,16 @@
             android:label="@string/title_receiver_boot">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".WiFiScanResultsReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="@string/title_receiver_wifi">
+            <intent-filter>
+                <action android:name="android.net.wifi.SCAN_RESULTS" />
             </intent-filter>
         </receiver>
     </application>

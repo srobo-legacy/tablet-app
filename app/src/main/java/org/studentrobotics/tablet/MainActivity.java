@@ -1,8 +1,10 @@
 package org.studentrobotics.tablet;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 
 public class MainActivity extends Activity {
@@ -19,6 +21,10 @@ public class MainActivity extends Activity {
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
+
+            WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            manager.setWifiEnabled(true);
+            manager.startScan();
         }
     }
 
