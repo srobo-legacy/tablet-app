@@ -2,5 +2,8 @@
 <resources>
 
     <string name="app_name">Student Robotics</string>
+    <string name="title_activity_main">Student Robotics</string>
+    <string name="title_service_wifi">WiFi Service</string>
+    <string name="title_receiver_boot">Start at Boot Receiver</string>
 
 </resources>
