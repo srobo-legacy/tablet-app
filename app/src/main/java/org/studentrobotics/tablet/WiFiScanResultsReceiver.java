@@ -40,6 +40,16 @@ public class WiFiScanResultsReceiver extends BroadcastReceiver {
         return config;
     }
 
+    private static boolean hasNetworkConfiguration(ScanResult result, WifiManager wifi) {
+        for (WifiConfiguration config : wifi.getConfiguredNetworks()) {
+            if (config.SSID.equals(result.SSID)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (isOnline(context)) {
@@ -67,8 +77,10 @@ public class WiFiScanResultsReceiver extends BroadcastReceiver {
         for (ScanResult result : results) {
             Log.d(TAG, "Found a result: " + result.SSID + " (" + result.BSSID + ")");
             if (result.SSID.equals(expectedSSID)) {
-                WifiConfiguration configuration = buildConfiguration(result, password);
-                wifi.addNetwork(configuration);
+                if (!hasNetworkConfiguration(result, wifi)) {
+                    WifiConfiguration configuration = buildConfiguration(result, password);
+                    wifi.addNetwork(configuration);
+                }
             }
         }
     }
