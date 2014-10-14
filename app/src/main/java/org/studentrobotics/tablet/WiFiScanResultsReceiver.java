@@ -29,12 +29,13 @@ public class WiFiScanResultsReceiver extends BroadcastReceiver {
             return;
         }
 
-        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-
         Log.i(TAG, "WiFi scan results available!");
+        Log.d(TAG, "We're not online... better do something about that.");
+
+        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         List<ScanResult> results = wifi.getScanResults();
         for (ScanResult result : results) {
-            Log.d(TAG, "Found a result: " + result);
+            Log.d(TAG, "Found a result: " + result.SSID + " (" + result.BSSID + ")");
         }
     }
 
