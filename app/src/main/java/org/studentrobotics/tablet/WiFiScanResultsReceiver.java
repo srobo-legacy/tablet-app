@@ -34,15 +34,15 @@ public class WiFiScanResultsReceiver extends BroadcastReceiver {
 
     private static WifiConfiguration buildConfiguration(ScanResult result, String password) {
         WifiConfiguration config = new WifiConfiguration();
-        config.BSSID = result.BSSID;
-        config.SSID = result.SSID;
-        config.preSharedKey = password;
+        config.SSID = "\"" + result.SSID + "\"";
+        config.preSharedKey = "\"" + password + "\"";
+        config.status = WifiConfiguration.Status.ENABLED;
         return config;
     }
 
     private static boolean hasNetworkConfiguration(ScanResult result, WifiManager wifi) {
         for (WifiConfiguration config : wifi.getConfiguredNetworks()) {
-            if (config.SSID.equals(result.SSID)) {
+            if (config.SSID.equals("\"" + result.SSID + "\"")) {
                 return true;
             }
         }
@@ -58,11 +58,11 @@ public class WiFiScanResultsReceiver extends BroadcastReceiver {
             return;
         }
 
-        String expectedSSID, password;
+        String ssid, password;
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(getWiFiConfigurationFile()));
-            expectedSSID = reader.readLine().trim();
+            ssid = reader.readLine().trim();
             password = reader.readLine().trim();
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,15 +71,19 @@ public class WiFiScanResultsReceiver extends BroadcastReceiver {
 
         Log.i(TAG, "WiFi scan results available!");
         Log.d(TAG, "We're not online... better do something about that.");
+        Log.d(TAG, "Looking for WiFi SSID of: " + ssid);
 
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+
         List<ScanResult> results = wifi.getScanResults();
         for (ScanResult result : results) {
             Log.d(TAG, "Found a result: " + result.SSID + " (" + result.BSSID + ")");
-            if (result.SSID.equals(expectedSSID)) {
+            if (result.SSID.equals(ssid)) {
                 if (!hasNetworkConfiguration(result, wifi)) {
                     WifiConfiguration configuration = buildConfiguration(result, password);
-                    wifi.addNetwork(configuration);
+                    Log.i(TAG, "Adding a network configuration for: " + ssid);
+                    int id = wifi.addNetwork(configuration);
+                    wifi.enableNetwork(id, false);
                 }
             }
         }

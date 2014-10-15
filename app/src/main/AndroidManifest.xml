@@ -28,7 +28,7 @@
         <receiver
             android:name=".StartAtBootReceiver"
             android:enabled="true"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/title_receiver_boot">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -38,7 +38,7 @@
         <receiver
             android:name=".WiFiScanResultsReceiver"
             android:enabled="true"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/title_receiver_wifi">
             <intent-filter>
                 <action android:name="android.net.wifi.SCAN_RESULTS" />
