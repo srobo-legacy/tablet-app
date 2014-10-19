@@ -14,7 +14,6 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 
 public class MainActivity extends Activity {
 
